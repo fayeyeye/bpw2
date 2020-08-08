@@ -52,6 +52,9 @@ public class collision_test : MonoBehaviour
     private float playerX;
     private float playerY;
     int bovenaan = 0;
+    int onderaan = 0;
+    int alBovenGeweest = 0; 
+
     public float timerTime;
     float timer;
 
@@ -117,6 +120,7 @@ public class collision_test : MonoBehaviour
                 Invoke("VallendeSter", 2);
 
                 timer = timerTime;
+                alBovenGeweest = 1; 
             }
         }
     }
