@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class collision_test : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class collision_test : MonoBehaviour
 
         player = GameObject.Find("Player");
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -72,15 +73,20 @@ public class collision_test : MonoBehaviour
         playerX = player.transform.position.x;
         playerY = player.transform.position.y;
 
+        Debug.Log("x is" + playerX + "y is" + playerY);
+
         //event > dag/nacht switch 
-        if ((playerX >= -1.1 && playerX <= 0.3) && (playerY >= 5.1 && playerY <= 5.4)) {
+        if ((playerX >= -1.1 && playerX <= 0.3) && (playerY >= 5.1 && playerY <= 5.4))
+        {
             bovenaan = 1;
 
-            if (bovenaan > 0 && Input.GetKey("e") && timer <= 0) {
+            if (bovenaan > 0 && Input.GetKey("e") && timer <= 0)
+            {
 
                 zonAnimator.SetInteger("switchTriggered", 1);
 
                 globalLightAnimator.SetInteger("switchTriggered", 1);
+                globalLightAnimator.SetInteger("switch2Triggered", 0);
 
                 windowLights1.SetInteger("switchTriggered", 1);
                 windowLights2.SetInteger("switchTriggered", 1);
@@ -92,6 +98,16 @@ public class collision_test : MonoBehaviour
                 windowLights8.SetInteger("switchTriggered", 1);
                 windowLights9.SetInteger("switchTriggered", 1);
 
+                windowLights1.SetInteger("switch2Triggered", 0);
+                windowLights2.SetInteger("switch2Triggered", 0);
+                windowLights3.SetInteger("switch2Triggered", 0);
+                windowLights4.SetInteger("switch2Triggered", 0);
+                windowLights5.SetInteger("switch2Triggered", 0);
+                windowLights6.SetInteger("switch2Triggered", 0);
+                windowLights7.SetInteger("switch2Triggered", 0);
+                windowLights8.SetInteger("switch2Triggered", 0);
+                windowLights9.SetInteger("switch2Triggered", 0);
+
                 spriteLight1.SetInteger("switchTriggered", 1);
                 spriteLight2.SetInteger("switchTriggered", 1);
                 spriteLight3.SetInteger("switchTriggered", 1);
@@ -101,6 +117,7 @@ public class collision_test : MonoBehaviour
                 spriteLight7.SetInteger("switchTriggered", 1);
                 spriteLight8.SetInteger("switchTriggered", 1);
                 spriteLight9.SetInteger("switchTriggered", 1);
+
 
                 reflected1.SetInteger("switchTriggered", 1);
                 reflected2.SetInteger("switchTriggered", 1);
@@ -120,14 +137,64 @@ public class collision_test : MonoBehaviour
                 Invoke("VallendeSter", 2);
 
                 timer = timerTime;
-                alBovenGeweest = 1; 
+                alBovenGeweest = 1;
             }
         }
+        // terugschakeling dag -> speler bij kat
+        if ((playerX >= 1.3 && playerX <= 1.8) && (playerY >= -1.7 && playerY <= -1.2))
+        {
+            onderaan = 1;
+            if (onderaan > 0 && Input.GetKey("e") && timer <= 0)
+            {
+                player.GetComponent<AudioSource>().enabled = true;
+                Invoke("miauw", 2);
+                Debug.Log("onderaan");
+                globalLightAnimator.SetInteger("switch2Triggered", 1);
+                globalLightAnimator.SetInteger("switchTriggered", 0);
+
+                windowLights1.SetInteger("switch2Triggered", 1);
+                windowLights2.SetInteger("switch2Triggered", 1);
+                windowLights3.SetInteger("switch2Triggered", 1);
+                windowLights4.SetInteger("switch2Triggered", 1);
+                windowLights5.SetInteger("switch2Triggered", 1);
+                windowLights6.SetInteger("switch2Triggered", 1);
+                windowLights7.SetInteger("switch2Triggered", 1);
+                windowLights8.SetInteger("switch2Triggered", 1);
+                windowLights9.SetInteger("switch2Triggered", 1);
+
+                windowLights1.SetInteger("switchTriggered", 0);
+                windowLights2.SetInteger("switchTriggered", 0);
+                windowLights3.SetInteger("switchTriggered", 0);
+                windowLights4.SetInteger("switchTriggered", 0);
+                windowLights5.SetInteger("switchTriggered", 0);
+                windowLights6.SetInteger("switchTriggered", 0);
+                windowLights7.SetInteger("switchTriggered", 0);
+                windowLights8.SetInteger("switchTriggered", 0);
+                windowLights9.SetInteger("switchTriggered", 0);
+            }
+        }
+
+        if ((playerX >= 0.4 && playerX <= 1.1) && (playerY >= -4.7 && playerY <= -4.0) && alBovenGeweest > 0 && Input.GetKey("e"))
+        {
+            zonAnimator.SetInteger("switchTriggered", 1);
+            globalLightAnimator.SetInteger("GameEnd", 1);
+            Invoke("gameEnd", 2);
+        }
+    }
+
+    void miauw()
+    {
+        player.GetComponent<AudioSource>().enabled = false;
     }
 
     void VallendeSter()
     {
         vallendeSter.SetInteger("nacht", (1));
+    }
+
+    void gameEnd()
+    {
+        SceneManager.LoadScene("start");
     }
 }
 
