@@ -281,9 +281,12 @@ public class collision_test : MonoBehaviour
 
             if (Input.GetKey("e"))
             {
+               
                 zonAnimator.SetInteger("switchTriggered", 1);
                 globalLightAnimator.SetInteger("GameEnd", 1);
                 Invoke("gameEnd", 2);
+                boatText.SetActive(false);
+                alBovenGeweest = 0;
             }
         }
 
